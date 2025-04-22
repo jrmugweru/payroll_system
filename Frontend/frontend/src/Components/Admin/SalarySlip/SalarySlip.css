@@ -1,0 +1,53 @@
+.salary-slip-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.salary-slip-container h2 {
+  margin-bottom: 20px;
+}
+
+.salary-slip-container button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.salary-slip-container button:hover {
+  background-color: #45a049;
+}
+
+.salary-slip-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.salary-slip-container li {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.salary-slip-container li button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.salary-slip-container li button:hover {
+  background-color: #0056b3;
+}

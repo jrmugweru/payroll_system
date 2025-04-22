@@ -1,0 +1,144 @@
+.admin-home-container {
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
+    background-color: #e7ecfb;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #222;
+}
+
+.dashboard {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.stat {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.stat p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.generate-payroll {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.generate-payroll button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.generate-payroll button:hover {
+    background-color: #45a049;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.admin-card {
+    text-decoration: none;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    color: inherit;
+}
+
+.admin-card:hover {
+    transform: scale(1.05);
+}
+
+.admin-card .icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.search-filter {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.search-filter input {
+    padding: 10px;
+    width: 60%;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.search-filter button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-filter button:hover {
+    background-color: #0056b3;
+}
+
+.notifications {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.notifications h3 {
+    margin-bottom: 10px;
+}
+
+.notifications ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.notifications li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.chart-container {
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+}

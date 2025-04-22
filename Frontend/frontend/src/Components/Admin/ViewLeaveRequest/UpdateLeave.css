@@ -1,0 +1,57 @@
+.update-leave-container {
+    background-color: #e7ecfb;
+    min-height: 100vh;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .update-leave-container h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #333;
+  }
+  
+  .update-leave-form {
+    background: white;
+    padding: 25px 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .update-leave-form label {
+    margin-top: 15px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .update-leave-form input,
+  .update-leave-form select {
+    margin-top: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+  }
+  
+  .update-leave-form button {
+    margin-top: 25px;
+    padding: 12px;
+    background-color: #00a86b;
+    color: white;
+    border: none;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .update-leave-form button:hover {
+    background-color: #008c5e;
+  }
+  

@@ -1,0 +1,41 @@
+.leave-status-container {
+    background-color: #e7eeff;
+    height: 100vh;
+    padding-top: 50px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  .leave-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #000;
+  }
+  
+  .leave-card {
+    background-color: #fff;
+    border-radius: 10px;
+    width: 400px;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+  }
+  
+  .search-bar {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .leave-details p {
+    margin: 8px 0;
+    text-align: left;
+  }
+  
+  .status.pending {
+    color: green;
+    font-weight: bold;
+  }
+  

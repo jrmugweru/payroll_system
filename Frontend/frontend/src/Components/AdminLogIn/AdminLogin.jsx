@@ -7,7 +7,7 @@ function AdminLogin() {
   const navigate = useNavigate();
 
   const [credentials, setCredentials] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -22,14 +22,22 @@ function AdminLogin() {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:8000/authentication/admin/login/", credentials);
+      const response = await axios.post(
+        "http://localhost:8000/authentication/admin/login/",
+        credentials
+      );
 
-      // If token or user data is returned, you can save it to localStorage or context
-      if (response.status === 200) {
-        // Example: localStorage.setItem("token", response.data.token);
-        navigate("/admin/home"); // Redirect after login
+      if (response.status === 200 && response.data.token) {
+        // Save token and user info to localStorage
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+
+        navigate("/admin/home"); // Redirect after successful login
+      } else {
+        setError("Login failed. Please try again.");
       }
     } catch (err) {
+      console.error(err);
       setError("Invalid credentials or server error.");
     }
   };
@@ -40,10 +48,10 @@ function AdminLogin() {
         <h2>Admin Login</h2>
         <form onSubmit={handleSubmit}>
           <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={credentials.username}
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={credentials.email}
             onChange={handleChange}
             required
           />

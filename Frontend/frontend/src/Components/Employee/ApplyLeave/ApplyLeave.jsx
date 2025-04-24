@@ -18,8 +18,29 @@ const ApplyLeave = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const token = localStorage.getItem('token'); // ✅ Retrieve token
+    console.log('Token:', token); // Log the token to check if it's available
+
+    if (!token) {
+      alert('User is not logged in. Please log in to submit a leave request.');
+      return;
+    }
+
+    console.log('Form Data:', formData); // Log form data to check what's being sent
+
+
     try {
-      const response = await axios.post('http://localhost:8000/leave-management/leaves/', formData);
+      const response = await axios.post(
+        'http://localhost:8000/leave-management/leave-requests/', // ✅ Make sure this endpoint is correct
+        formData,
+        {
+          headers: {
+            Authorization: `Token ${token}`, // ✅ Send token in headers
+          },
+        }
+      );
+
+      console.log('Response:', response); // Log the response to see if it's successful
 
       if (response.status === 201) {
         alert('Leave request submitted!');
@@ -32,9 +53,16 @@ const ApplyLeave = () => {
       } else {
         alert('Something went wrong.');
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error submitting leave:', error);
-      alert('Submission failed. Please check the console for details.');
+      if (error.response) {
+        // Log the response error to get more detailed info from the backend
+        console.error('Backend Error:', error.response.data);
+        alert(`Submission failed. Error: ${error.response.data}`);
+      } else {
+        alert('Submission failed. Please check the console for details.');
+      }
     }
   };
 

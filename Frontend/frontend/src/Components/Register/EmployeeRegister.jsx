@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./Register.css"; // You can reuse your existing CSS
+import "./Register.css";
 
 function EmployeeRegister() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    username: "",
+    employee_id: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -32,19 +32,19 @@ function EmployeeRegister() {
 
     try {
       const response = await axios.post("http://localhost:8000/authentication/employee/register/", {
-        username: formData.username,
+        employee_id: formData.employee_id,
         email: formData.email,
         password: formData.password,
       });
 
       if (response.status === 201 || response.status === 200) {
         setSuccess("Registration successful! Redirecting to login...");
-        setTimeout(() => navigate("/employee/login"), 2000); // adjust path as needed
+        setTimeout(() => navigate("/employee"), 2000);
       }
     } catch (err) {
       setError(
         err.response?.data?.email?.[0] ||
-        err.response?.data?.username?.[0] ||
+        err.response?.data?.employee_id?.[0] ||
         err.response?.data?.password?.[0] ||
         "Registration failed. Please try again."
       );
@@ -58,9 +58,9 @@ function EmployeeRegister() {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            name="username"
-            placeholder="Username"
-            value={formData.username}
+            name="employee_id"
+            placeholder="Employee ID"
+            value={formData.employee_id}
             onChange={handleChange}
             required
           />

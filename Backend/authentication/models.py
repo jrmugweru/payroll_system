@@ -39,9 +39,14 @@ class CustomUserManager(BaseUserManager):
 
 class CustomerUser(AbstractUser):
     email = models.EmailField(unique=True)
+    employee_id = models.CharField(max_length=20, null=True, blank=True)  # Add this field
     birthday = models.DateField(null=True, blank=True)
     username = models.CharField(max_length=150, null=True, blank=True)
-    objects=CustomUserManager()
+
+    objects = CustomUserManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ["employee_id"]  # Require employee ID on superuser creation
+
+    def __str__(self):
+        return self.employee_id

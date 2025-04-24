@@ -1,52 +1,27 @@
-# from rest_framework import viewsets, permissions
-# from .models import LeaveRequest
-# from .serializers import LeaveRequestSerializer
-# from rest_framework.decorators import action
-# from rest_framework.response import Response
-
-# class LeaveRequestViewSet(viewsets.ModelViewSet):
-#     queryset = LeaveRequest.objects.all()
-#     serializer_class = LeaveRequestSerializer
-
-#     def get_permissions(self):
-#         if self.action in ['approve', 'reject']:
-#             return [permissions.IsAdminUser()]
-#         return [permissions.IsAuthenticated()]
-
-#     def perform_create(self, serializer):
-#         serializer.save(employee=self.request.user)
-
-#     def get_queryset(self):
-#         user = self.request.user
-#         if user.is_staff:
-#             return LeaveRequest.objects.all()
-#         return LeaveRequest.objects.filter(employee=user)
-
-#     @action(detail=True, methods=['post'])
-#     def approve(self, request, pk=None):
-#         leave = self.get_object()
-#         leave.status = 'APPROVED'
-#         leave.save()
-#         return Response({'status': 'Leave approved'})
-
-#     @action(detail=True, methods=['post'])
-#     def reject(self, request, pk=None):
-#         leave = self.get_object()
-#         leave.status = 'REJECTED'
-#         leave.save()
-#         return Response({'status': 'Leave rejected'})
-
-from rest_framework import viewsets, permissions
+import logging
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from knox.auth import TokenAuthentication
 from .models import LeaveRequest
 from .serializers import LeaveRequestSerializer
 
-class LeaveRequestViewSet(viewsets.ModelViewSet):
-    queryset = LeaveRequest.objects.all()
-    serializer_class = LeaveRequestSerializer
+# Set up logger
+logger = logging.getLogger(__name__)
 
-    def get_permissions(self):
-        if self.action in ['create']:
-            return [permissions.IsAuthenticated()]  # Employees can create
-        if self.action in ['update', 'partial_update', 'destroy']:
-            return [permissions.IsAdminUser()]  # Only Admins can update/delete
-        return [permissions.IsAuthenticated()]
+class LeaveRequestViewSet(viewsets.ModelViewSet):
+    serializer_class = LeaveRequestSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        if self.request.user.is_staff:  # Admin can view all leave requests
+            return LeaveRequest.objects.all()
+        return LeaveRequest.objects.filter(employee=self.request.user)  # Employee can only view their requests
+
+    def perform_create(self, serializer):
+        logger.info('Received data for creating a leave request: %s', self.request.data)  # Log incoming data
+        try:
+            serializer.save(employee=self.request.user)
+        except Exception as e:
+            logger.error('Error occurred while saving leave request: %s', str(e))  # Log any errors that occur
+            raise e  # Reraise the exception after logging it

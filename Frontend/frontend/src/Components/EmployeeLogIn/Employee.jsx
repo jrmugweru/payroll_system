@@ -7,7 +7,7 @@ function EmployeeLogin() {
   const navigate = useNavigate();
 
   const [credentials, setCredentials] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -26,6 +26,10 @@ function EmployeeLogin() {
 
       if (response.status === 200) {
         // Example: localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+
+        
         navigate("/employee/home"); // Redirect after login
       }
     } catch (err) {
@@ -39,10 +43,10 @@ function EmployeeLogin() {
         <h2>Employee Login</h2>
         <form onSubmit={handleSubmit}>
           <input
-            type="text"
-            name="username"
-            placeholder="Employee ID"
-            value={credentials.username}
+            type="email"
+            name="email"
+            placeholder="email"
+            value={credentials.email}
             onChange={handleChange}
             required
           />

@@ -7,7 +7,6 @@ function AdminRegister() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -32,19 +31,17 @@ function AdminRegister() {
 
     try {
       const response = await axios.post("http://localhost:8000/authentication/admin/register/", {
-        username: formData.username,
         email: formData.email,
         password: formData.password,
       });
 
       if (response.status === 201 || response.status === 200) {
         setSuccess("Admin registered successfully! Redirecting...");
-        setTimeout(() => navigate("/admin/login"), 2000); // update path as needed
+        setTimeout(() => navigate("/admin"), 2000); // update path as needed
       }
     } catch (err) {
       setError(
         err.response?.data?.email?.[0] ||
-        err.response?.data?.username?.[0] ||
         err.response?.data?.password?.[0] ||
         "Registration failed. Please try again."
       );
@@ -56,14 +53,7 @@ function AdminRegister() {
       <div className="login-card">
         <h2>Admin Registration</h2>
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={formData.username}
-            onChange={handleChange}
-            required
-          />
+        
           <input
             type="email"
             name="email"

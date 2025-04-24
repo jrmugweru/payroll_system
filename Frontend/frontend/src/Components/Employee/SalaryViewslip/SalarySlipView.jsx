@@ -4,30 +4,39 @@ import './SalarySlipView.css';
 import { Link } from 'react-router-dom';
 
 const SalarySlipView = () => {
+  const [empIdInput, setEmpIdInput] = useState('');
+  const [employeeData, setEmployeeData] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const slipRef = useRef();
 
-  const employeeData = {
-    name: 'Arun',
-    empId: 'KUM005',
-    monthYear: 'January 2024',
-    designation: 'Software Engineer',
-    basicPay: '₹30,000',
-    hra: '₹10,000',
-    otherAllowances: '₹5,000',
-    deductions: '₹2,000',
-    netPay: '₹43,000',
+  const fetchSalarySlip = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert("You're not logged in!");
+        return;
+      }
+  
+      const response = await fetch(`http://127.0.0.1:8000/employee-management/generate-salary-slip/${empIdInput}/`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Token ${localStorage.getItem('token')}`
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch salary slip');
+      }
+  
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank'); // or use download logic if preferred
+    } catch (error) {
+      console.error('Error fetching salary slip:', error);
+      alert('Authentication failed or employee not found.');
+    }
   };
-
-  const handlePrint = () => {
-    const printContent = slipRef.current.innerHTML;
-    const win = window.open('', '', 'width=900,height=650');
-    win.document.write('<html><head><title>Salary Slip</title></head><body>');
-    win.document.write(printContent);
-    win.document.write('</body></html>');
-    win.document.close();
-    win.print();
-  };
+  
 
   const handleDownloadPDF = () => {
     const doc = new jsPDF();
@@ -53,36 +62,43 @@ const SalarySlipView = () => {
 
   return (
     <div className="salary-slip-container">
-      <h2>Salary Details</h2>
+      <h2>Search Salary Slip</h2>
       <div className="search-bar">
-        <input type="text" placeholder="Search..." />
+        <input 
+          type="text" 
+          placeholder="Enter Employee ID" 
+          value={empIdInput}
+          onChange={(e) => setEmpIdInput(e.target.value)}
+        />
+        <button onClick={fetchSalarySlip}>Search</button>
       </div>
-      <table className="salary-table">
-        <thead>
-          <tr>
-            <th>S.No</th>
-            <th>Name</th>
-            <th>Emp ID</th>
-            <th>Month & Year</th>
-            <th>Salary Slip</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td><a href="#">{employeeData.name}</a></td>
-            <td>{employeeData.empId}</td>
-            <td>{employeeData.monthYear}</td>
-            <td>
-              <button className="view-slip-btn" onClick={() => setShowModal(true)}>
-                View Salary Slip
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
 
-      {showModal && (
+      {employeeData && (
+        <div className="salary-result">
+          <table className="salary-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Emp ID</th>
+                <th>Month & Year</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{employeeData.name}</td>
+                <td>{employeeData.empId}</td>
+                <td>{employeeData.monthYear}</td>
+                <td>
+                  <button onClick={() => setShowModal(true)}>View</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {showModal && employeeData && (
         <div className="modal-backdrop">
           <div className="modal" ref={slipRef}>
             <h3>Salary Slip - {employeeData.monthYear}</h3>
@@ -95,22 +111,15 @@ const SalarySlipView = () => {
             <p><strong>Deductions:</strong> {employeeData.deductions}</p>
             <p><strong>Net Pay:</strong> {employeeData.netPay}</p>
             <div className="modal-actions">
-              <button className="print-btn" onClick={handlePrint}>Print</button>
-              <button className="download-btn" onClick={handleDownloadPDF}>Download PDF</button>
-              <button className="close-btn" onClick={() => setShowModal(false)}>Close</button>
+              <button onClick={handleDownloadPDF}>Download PDF</button>
+              <button onClick={() => setShowModal(false)}>Close</button>
             </div>
           </div>
         </div>
       )}
-
-      <div className="footer">
-      <Link to="/employee/home">  
-        <button className="home-btn">Home</button>
-        </Link>
-        <span className="logout-timer">Logout 00:00:14</span>
-      </div>
     </div>
   );
 };
+
 
 export default SalarySlipView;

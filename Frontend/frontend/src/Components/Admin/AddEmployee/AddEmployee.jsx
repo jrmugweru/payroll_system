@@ -1,52 +1,69 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './AddEmployee.css';
 
 const AddEmployee = () => {
   const [formData, setFormData] = useState({
-    employeeId: '',
     name: '',
     email: '',
     phone: '',
     department: '',
     designation: '',
-    baseSalary: '',
+    base_salary: '',
     bonuses: '',
     deductions: '',
-    joiningDate: '',
+    joining_date: '',
   });
-
-  // Function to generate a unique employee ID
-  const generateEmployeeId = () => {
-    const prefix = 'EMP'; // Prefix for the employee ID
-    const uniqueNumber = Date.now().toString().slice(-5); // Use the last 5 digits of the current timestamp
-    return `${prefix}-${uniqueNumber}`;
-  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const uniqueId = generateEmployeeId(); // Generate a unique ID
-    const newEmployeeData = { ...formData, employeeId: uniqueId }; // Add the unique ID to the form data
 
-    // Replace with your API logic or data handling
-    console.log('Employee Data:', newEmployeeData);
-    alert(`Employee added successfully! Employee ID: ${uniqueId}`);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Authentication token is missing. Please log in again.');
+      return;
+    }
 
-    setFormData({
-      employeeId: '',
-      name: '',
-      email: '',
-      phone: '',
-      department: '',
-      designation: '',
-      baseSalary: '',
-      bonuses: '',
-      deductions: '',
-      joiningDate: '',
-    });
+    // Log form data for debugging
+    console.log('Form data:', formData);
+
+    try {
+      // Send formData directly without any modification
+      const response = await axios.post('http://localhost:8000/employee-management/employees/', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${token}`,
+        },
+      });
+
+      alert(`Employee added successfully! Employee ID: ${response.data.employee_id}`);
+      
+      // Clear form after submission
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        department: '',
+        designation: '',
+        base_salary: '',
+        bonuses: '',
+        deductions: '',
+        joining_date: '',
+      });
+    } catch (error) {
+      if (error.response) {
+        // Log the response data for debugging
+        console.error('Error response data:', error.response.data);
+        alert(`Error: ${JSON.stringify(error.response.data)}`);
+      } else {
+        console.error('Error adding employee:', error);
+        alert('Failed to add employee. Please try again.');
+      }
+    }
   };
 
   return (
@@ -95,9 +112,9 @@ const AddEmployee = () => {
         />
         <input
           type="number"
-          name="baseSalary"
+          name="base_salary"
           placeholder="Base Salary"
-          value={formData.baseSalary}
+          value={formData.base_salary}
           onChange={handleChange}
           required
         />
@@ -117,9 +134,9 @@ const AddEmployee = () => {
         />
         <input
           type="date"
-          name="joiningDate"
+          name="joining_date"
           placeholder="Joining Date"
-          value={formData.joiningDate}
+          value={formData.joining_date}
           onChange={handleChange}
           required
         />

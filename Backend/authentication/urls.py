@@ -8,7 +8,7 @@
 from django.urls import path, include
 from . import views  # ✅ Import views correctly
 from rest_framework.routers import DefaultRouter
-from .views import AdminRegisterViewSet,EmployeeLoginViewSet, EmployeeRegisterViewSet, home , AdminLoginViewSet, ContactMessageViewSet
+from .views import AdminRegisterViewSet,EmployeeRegisterViewSet,EmployeeLoginViewSet, AdminLoginViewSet, ContactMessageViewSet
 
 
 
